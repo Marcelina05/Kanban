@@ -17,7 +17,7 @@ const Navbar = () => {
   const navigate = useNavigate()
   const handleLogOut = () => {
     logOut()
-    navigate('/')
+    window.location.reload()
   }
   const VisuallyHiddenInput = styled('input')`
     clip: rect(0 0 0 0);

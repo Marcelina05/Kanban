@@ -7,3 +7,7 @@ export const getUsername = (): string => {
 export const getAvatarUrl = (): string => {
   return pb.getFileUrl(pb.authStore.model!, pb.authStore.model?.avatar) ?? ''
 }
+
+export const getUserId = (): string => {
+  return pb.authStore.model?.id ?? ''
+}

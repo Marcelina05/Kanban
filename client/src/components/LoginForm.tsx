@@ -14,7 +14,7 @@ const LoginForm = () => {
   const handleLogin = (values: any) => {
     login(values.username, values.password)
       .then((_) => window.location.reload())
-      .catch((error) =>
+      .catch(() =>
         toast.error(`Invalid credentials`, {
           position: toast.POSITION.TOP_RIGHT
         })
