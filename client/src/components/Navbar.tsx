@@ -1,35 +1,44 @@
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
-import { InputAdornment } from '@mui/material'
-import searchIcon from 'assets/lupa.png'
-import { Avatar } from '@mui/material'
-import { getUsername, getAvatarUrl } from 'services/userService'
 import Dropdown from '@mui/joy/Dropdown'
 import Menu from '@mui/joy/Menu'
 import MenuButton from '@mui/joy/MenuButton'
 import MenuItem from '@mui/joy/MenuItem'
-import { logOut } from 'services/authService'
+import { Avatar, Input, InputAdornment, SxProps, Theme } from '@mui/material'
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import searchIcon from 'assets/lupa.png'
 import { useNavigate } from 'react-router-dom'
-import { styled } from '@mui/joy'
+import NotificationService from 'services/NotificationService'
+import { logOut } from 'services/authService'
+import { getAvatarUrl, getUsername, updateAvatar } from 'services/userService'
 
 const Navbar = () => {
-  const navigate = useNavigate()
   const handleLogOut = () => {
     logOut()
     window.location.reload()
   }
-  const VisuallyHiddenInput = styled('input')`
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    white-space: nowrap;
-    width: 1px;
-  `
+
+  const hiddenInputStyles: SxProps<Theme> = {
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: '1px',
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: '1px',
+  }
+
+  const handleAvatarUpload = (event: any) => {
+    try {
+      const file = event.target.files![0];
+      updateAvatar(file);
+      NotificationService.success('Avatar image updated successfully');
+    } catch {
+      NotificationService.error('Error updating avatar');
+    }
+  }
 
   return (
     <Box className="flex justify-between items-center bg-slate-50 border-solid border-2 border-gray-800 h-16">
@@ -58,10 +67,10 @@ const Navbar = () => {
             <Avatar className=" !ml-2" alt="user avatar" src={getAvatarUrl()} />
           </Box>
         </MenuButton>
-        <Menu>
+        <Menu keepMounted>
           <MenuItem component={'label'}>
             Change Avatar
-            <VisuallyHiddenInput type="file" />
+            <Input type='file' inputProps={{accept: 'image/*'}} sx={hiddenInputStyles} onChange={handleAvatarUpload} />
           </MenuItem>
           <MenuItem onClick={handleLogOut}>Logout</MenuItem>
         </Menu>
