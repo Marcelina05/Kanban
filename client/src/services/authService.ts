@@ -23,6 +23,6 @@ export const logOut = () => {
 }
 
 export const userIsLogged = (): boolean => {
-  return true
+//  return true
   return pb.authStore.isValid && !!pb.authStore.token
 }
