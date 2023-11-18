@@ -99,7 +99,7 @@ const BoardList = () => {
             </Icon>
           </Button>
           <Dialog open={openBoardForm} onClose={closeForm} fullWidth maxWidth='md'>
-            <DialogContent>
+            <DialogContent className='bg-[#F2F6FA]'>
               <CreateBoardForm onSubmit={handleBoardCreate} board={selectedBoard} />
             </DialogContent>
           </Dialog>

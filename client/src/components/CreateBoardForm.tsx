@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import Board from "models/Board";
 import { toast } from "react-toastify";
@@ -29,20 +29,21 @@ const CreateBoardForm = ({ onSubmit, board }: Props) => {
       onSubmit={formik.handleSubmit}
       className="flex flex-col py-8"
     >
+      <Typography className='w-[100%] text-center !font-bold !text-3xl'>Board title</Typography>
       <TextField
         name="title"
         onChange={formik.handleChange}
         value={formik.values.title}
-        label="Board title"
-        className="!m-auto !my-3 w-4/5 bg-neutral-100"
+        className="!m-auto !my-3 w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg"
         size="small"
       />
       <Button
         type="submit"
         variant="contained"
-        className="!m-auto !mt-6 w-2/6"
+        className="!m-auto !mt-10 w-2/6 !py-3 !rounded-lg"
         sx={{
           backgroundColor: '#9F8BF9',
+          color: '#343A40',
           '&:hover': { backgroundColor: '#BEB1FB' }
         }}
         size="medium"
