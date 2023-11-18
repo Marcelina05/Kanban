@@ -16,9 +16,9 @@ export const createBoard = async (title: string, ownerId: string) => {
   return service.create(record);
 }
 
-export const getAllBoards = async (ownerId: string): Promise<Board[]> => {
+export const getAllBoards = async (ownerId: string, search: string = ''): Promise<Board[]> => {
   const options: FullListOptions = {
-    filter: `owner='${ownerId}'`,
+    filter: `owner='${ownerId}'${!!search ? `&&title~'${search}'` :''}`,
   }
 
   return service.getFullList(options);

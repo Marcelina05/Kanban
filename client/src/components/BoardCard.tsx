@@ -11,6 +11,7 @@ import { useState } from 'react'
 import ConfirmationDialog from './ConfirmationDialog'
 import { useNavigate } from 'react-router-dom'
 import Routes from 'enums/Routes'
+import DateUtils from 'utils/DateUtils'
 
 interface Props {
   board: Board;
@@ -44,10 +45,10 @@ const BoardCard = ({ board, notify, onUpdate }: Props) => {
   return (
     <>
       <Box className="items-center flex justify-between bg-slate-50 w-5/6 h-15 rounded-lg my-2">
-        <Box className="ml-4 w-[100%] cursor-pointer" onClick={handleNavigation}>
+        <Box className="ml-4 w-[100%] cursor-pointer capitalize" onClick={handleNavigation}>
           <Typography className="!ml-4 !mt-2">{board.title}</Typography>
           <Typography className="!ml-4 !mt-1 text-[#495057] opacity-75">
-            {`${board.created}`}
+            {`${DateUtils.formatDate(board.created)}`}
           </Typography>
         </Box>
         <Box className="mr-8 flex justify-between">

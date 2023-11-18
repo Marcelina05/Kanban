@@ -19,12 +19,14 @@ const BoardList = () => {
   const [boards, setBoards] = useState<Board[]>([]);
   const [updateOn, setUpdateOn] = useState<Date>(new Date());
 
-  const fetchBoards = async () => {
+  const fetchBoards = async (search: string = '') => {
     try {
-      const fetched = await getAllBoards(getUserId());
+      const fetched = await getAllBoards(getUserId(), search);
       setBoards(fetched);
-    } catch {
-      NotificationService.error('Error fetching boards');
+    } catch (error) {
+      if (!`${error}`.includes('autocancelled')) {
+        NotificationService.error('Error fetching boards');
+      }
     }
   }
 
@@ -83,7 +85,7 @@ const BoardList = () => {
   }
 
   const handleSearch = (text: string) => {
-
+    fetchBoards(text)
   }
 
   return (
