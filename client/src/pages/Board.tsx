@@ -170,9 +170,13 @@ const BoardPage = () => {
     setActiveId('')
   }
 
+  const handleSearch = (text: string) => {
+
+  }
+
   return (
     <Box>
-      <Navbar />
+      <Navbar onSearch={handleSearch} />
       <Box className="flex mt-16 justify-evenly">
         <DndContext
           collisionDetection={closestCorners}

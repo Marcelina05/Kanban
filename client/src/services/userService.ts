@@ -7,8 +7,10 @@ export const getUsername = (): string => {
   return pb.authStore.model?.username ?? ''
 }
 
-export const getAvatarUrl = (): string => {
-  return pb.getFileUrl(pb.authStore.model!, pb.authStore.model?.avatar) ?? ''
+
+export const getAvatarUrl = async (avatarUrl?: string): Promise<string> => {
+  await service.authRefresh()
+  return pb.getFileUrl(pb.authStore.model!, avatarUrl ?? pb.authStore.model?.avatar) ?? ''
 }
 
 export const getUserId = (): string => {
@@ -21,5 +23,5 @@ export const updateAvatar = async (image: File) => {
 
   formData.append('avatar', image);
 
-  service.update(user.id, formData);
+  return service.update(user.id, formData);
 }

@@ -1,44 +1,71 @@
+import { Close } from '@mui/icons-material'
 import Dropdown from '@mui/joy/Dropdown'
 import Menu from '@mui/joy/Menu'
 import MenuButton from '@mui/joy/MenuButton'
 import MenuItem from '@mui/joy/MenuItem'
-import { Avatar, Input, InputAdornment, SxProps, Theme } from '@mui/material'
+import { Avatar, IconButton, Input, InputAdornment, SxProps, Theme } from '@mui/material'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import searchIcon from 'assets/lupa.png'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import NotificationService from 'services/NotificationService'
 import { logOut } from 'services/authService'
 import { getAvatarUrl, getUsername, updateAvatar } from 'services/userService'
 
-const Navbar = () => {
+interface Props {
+  onSearch: (text: string) => void;
+}
+
+const hiddenInputStyles: SxProps<Theme> = {
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: '1px',
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: '1px',
+}
+
+const Navbar = ({ onSearch }: Props) => {
+  const [avatar, setAvatar] = useState<string>();
+  const [search, setSearch] = useState<string>('');
+
+  useEffect(() => {
+    fetchAvatar()
+  }, [])
+
+  const fetchAvatar = async (url?: string) => {
+    setAvatar(await getAvatarUrl(url))
+  }
+
   const handleLogOut = () => {
     logOut()
     window.location.reload()
   }
 
-  const hiddenInputStyles: SxProps<Theme> = {
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: '1px',
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: '1px',
-  }
-
-  const handleAvatarUpload = (event: any) => {
+  const handleAvatarUpload = async (event: any) => {
     try {
       const file = event.target.files![0];
-      updateAvatar(file);
+      const updatedModel = await updateAvatar(file);
+      fetchAvatar(updatedModel.avatar);
       NotificationService.success('Avatar image updated successfully');
     } catch {
       NotificationService.error('Error updating avatar');
     }
   }
+
+  const handleOnSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+
+    setSearch(value);
+  }
+
+  useEffect(() => {
+    onSearch(search);
+  }, [search])
 
   return (
     <Box className="flex justify-between items-center bg-slate-50 border-solid border-2 border-gray-800 h-16">
@@ -48,6 +75,8 @@ const Navbar = () => {
         placeholder="try search a card"
         className="w-1/3"
         size="small"
+        onChange={handleOnSearch}
+        value={search}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -57,20 +86,27 @@ const Navbar = () => {
                 style={{ width: '1.3rem', height: '1.3rem' }}
               />
             </InputAdornment>
-          )
+          ),
+          endAdornment: (
+            !!search ? (<InputAdornment position="end">
+              <IconButton aria-label="toggle password visibility" onClick={() => setSearch('')} edge="end">
+                <Close sx={{ fill: 'black' }} />
+              </IconButton>
+            </InputAdornment>) : (<></>)
+          ),
         }}
       />
       <Dropdown>
         <MenuButton className="flex justify between items-center !mr-8 !border-none">
           <Box className="flex justify between items-center">
             <Typography className="!mr-4">{getUsername()}</Typography>
-            <Avatar className=" !ml-2" alt="user avatar" src={getAvatarUrl()} />
+            <Avatar className=" !ml-2" alt="user avatar" src={avatar} />
           </Box>
         </MenuButton>
         <Menu keepMounted>
           <MenuItem component={'label'}>
             Change Avatar
-            <Input type='file' inputProps={{accept: 'image/*'}} sx={hiddenInputStyles} onChange={handleAvatarUpload} />
+            <Input type='file' inputProps={{ accept: 'image/*' }} sx={hiddenInputStyles} onChange={handleAvatarUpload} />
           </MenuItem>
           <MenuItem onClick={handleLogOut}>Logout</MenuItem>
         </Menu>

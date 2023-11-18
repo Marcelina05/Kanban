@@ -82,9 +82,13 @@ const BoardList = () => {
     toggleForm();
   }
 
+  const handleSearch = (text: string) => {
+
+  }
+
   return (
     <Box className="flex flex-col">
-      <Navbar />
+      <Navbar onSearch={handleSearch} />
       <Box className="flex flex-col w-[90vw] h-[80vh]  my-8 mx-16 bg-[#E2EAF4] rounded-xl">
         <Box className='flex justify-end mr-4 mt-4'>
           <Button className="!bg-[#C7D6FA] !min-w-0 !w-12 !h-12 !rounded-full" onClick={toggleForm}>

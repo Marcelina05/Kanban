@@ -7,7 +7,6 @@ import Navbar from 'components/Navbar'
 const CreateCard = () => {
   return (
     <Box>
-      <Navbar/>
       <Box className="flex flex-col items-center justify-center w-[90vw] h-[80vh]  my-8 mx-16 bg-[#E2EAF4] rounded-xl">
         <Box className="bg-[#E2EAF4] flex flex-col items-center w-2/4">
           <Typography className="!mt-2 !text-lg">Title</Typography>
