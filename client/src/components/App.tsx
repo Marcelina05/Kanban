@@ -4,16 +4,17 @@ import Home from 'pages/Home'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import PrivateRoute from 'components/PrivateRoute'
+import Routes from 'enums/Routes'
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: Routes.HOME,
     element: <Home />
   },
   {
-    path: '/kanban',
+    path: Routes.BOARD,
     element: (
       <PrivateRoute>
         <BoardPage />
@@ -21,12 +22,8 @@ const router = createBrowserRouter([
     )
   },
   {
-    path: '/create',
-    element: (
-      <PrivateRoute>
-        <CreateCard />
-      </PrivateRoute>
-    )
+    path: '*',
+    element: <Navigate to={Routes.HOME} replace state={{error: true}}/>
   }
 ])
 

@@ -3,19 +3,23 @@ import { userIsLogged } from 'services/authService'
 import BoardList from 'pages/BoardList'
 import PrivateRoute from 'components/PrivateRoute'
 import Login from 'pages/Login'
+import NotificationService from 'services/NotificationService'
+import { useLocation } from 'react-router-dom'
 
 const Home = () => {
-  const [isLogged, setIsLogged] = useState<boolean>(false)
+  const location = useLocation();
 
-  const verifyPermission = () => {
-    setIsLogged(userIsLogged())
+  const handleError = () => {
+    if (!!location.state?.error) {
+      NotificationService.error('Page not found');
+    }
   }
 
   useEffect(() => {
-    verifyPermission()
+    handleError();
   }, [])
 
-  return isLogged ? (
+  return userIsLogged() ? (
     <PrivateRoute>
       <BoardList />
     </PrivateRoute>

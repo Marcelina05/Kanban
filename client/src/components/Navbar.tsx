@@ -8,7 +8,9 @@ import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import searchIcon from 'assets/lupa.png'
+import Routes from 'enums/Routes'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import NotificationService from 'services/NotificationService'
 import { logOut } from 'services/authService'
 import { getAvatarUrl, getUsername, updateAvatar } from 'services/userService'
@@ -30,6 +32,7 @@ const hiddenInputStyles: SxProps<Theme> = {
 }
 
 const Navbar = ({ onSearch }: Props) => {
+  const navigate = useNavigate();
   const [avatar, setAvatar] = useState<string>();
   const [search, setSearch] = useState<string>('');
 
@@ -63,13 +66,17 @@ const Navbar = ({ onSearch }: Props) => {
     setSearch(value);
   }
 
+  const navigateHome = () => {
+    navigate(Routes.HOME);
+  }
+
   useEffect(() => {
     onSearch(search);
   }, [search])
 
   return (
     <Box className="flex justify-between items-center bg-slate-50 border-solid border-2 border-gray-800 h-16">
-      <Typography className="!ml-8 !text-xl">KANBAN ZEN</Typography>
+      <Typography className="!ml-8 !text-xl cursor-pointer" onClick={navigateHome} >KANBAN ZEN</Typography>
       <TextField
         variant="outlined"
         placeholder="try search a card"
