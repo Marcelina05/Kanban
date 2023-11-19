@@ -1,34 +1,42 @@
+import {
+  DndContext,
+  DragCancelEvent,
+  DragEndEvent,
+  DragOverEvent,
+  DragOverlay,
+  DragStartEvent,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  closestCorners,
+  useSensor,
+  useSensors
+} from '@dnd-kit/core'
+import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { Box, Typography } from '@mui/material'
+import KanbanCard from 'components/KanbanCard'
+import KanbanSection from 'components/KanbanSection'
+import Navbar from 'components/Navbar'
+import CardStatus from 'enums/CardStatus'
+import Routes from 'enums/Routes'
 import MockBoard from 'mocks/MockBoard'
 import Board from 'models/Board'
 import Card from 'models/Card'
-import { useEffect, useMemo, useState } from 'react'
-import {
-  DndContext,
-  closestCorners,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-  DragStartEvent,
-  DragOverEvent,
-  DragCancelEvent,
-  closestCenter
-} from '@dnd-kit/core'
-import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-import CardStatus from 'enums/CardStatus'
-import KanbanSection from 'components/KanbanSection'
-import { generateId } from 'utils/EntityUtils'
-import { DragOverlay } from '@dnd-kit/core'
-import KanbanCard from 'components/KanbanCard'
-import Navbar from 'components/Navbar'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { updateCard } from 'services/CardService'
+import NotificationService from 'services/NotificationService'
+import { getBoard, updateBoard } from 'services/boardService'
+import { getUserId } from 'services/userService'
 
 const BoardPage = () => {
   const [board, setBoard] = useState<Board>(MockBoard)
   const [cards, setCards] = useState<Card[]>([])
   const [activeId, setActiveId] = useState<string>('')
   const [updateOn, setUpdateOn] = useState<Date>(new Date());
+  const wasLoaded = useRef<boolean>(false);
+  const params = useParams();
+  const navigate = useNavigate();
 
   const getCards = (status: CardStatus): Card[] => {
     return cards
@@ -58,26 +66,9 @@ const BoardPage = () => {
     })
   )
 
-  useEffect(() => {
-    setCards(
-      board.cards.map((card, index) => {
-        return {
-          ...card,
-          id: generateId(),
-          order: index + 1,
-          title: `${card.title} ${index + 1}`
-        }
-      })
-    )
-  }, [board])
-
-  const handleDragStart = (event: DragStartEvent) => {
-    setActiveId(`${event.active.id}`)
-  }
-
-  const handleDragCancel = (event: DragCancelEvent) => {
-    setActiveId('')
-  }
+  const handleDragStart = (event: DragStartEvent) => setActiveId(`${event.active.id}`);
+  const handleDragCancel = (event: DragCancelEvent) => handleChangeCardPosition();
+  const handleDragEnd = (event: DragEndEvent) => handleChangeCardPosition();
 
   const handleDragOver = (event: DragOverEvent) => {
     const { active, over } = event
@@ -164,25 +155,64 @@ const BoardPage = () => {
         return card
       })
 
+      console.table(newCards.map(card => {
+        return { order: card.order, id: card.id, title: card.title }
+      }))
       return newCards
     })
-  }
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    setActiveId('')
   }
 
   const handleSearch = (text: string) => {
 
   }
 
-  const fetchBoard = () => {
-
+  const fetchBoard = async () => {
+    try {
+      if (!!params.id) {
+        const fetched = await getBoard(getUserId(), params.id);
+        wasLoaded.current = true;
+        setBoard(fetched);
+      } else {
+        navigate(Routes.HOME, { state: { error: true } });
+      }
+    } catch {
+      if (!!wasLoaded.current) {
+        NotificationService.error('Error loading board, refresh the website')
+      } else {
+        navigate(Routes.HOME, { state: { error: true, message: "Board doesn't exist!" } });
+      }
+    }
   }
 
   useEffect(() => {
     fetchBoard();
   }, [updateOn])
+
+  useEffect(() => {
+    setCards(board.cards)
+  }, [board])
+
+  const saveBoard = async () => {
+    const saveBoard = {
+      ...board,
+      cards: board.cards.map(card => card.id),
+    }
+    await updateBoard(board.id, saveBoard as unknown as Board)
+  }
+
+  const handleChangeCardPosition = async () => {
+    await Promise.all(cards.map(updateCard))
+    setActiveId('');
+    saveBoard();
+  }
+
+  const saveCard = (cardId: string) => {
+    const newBoard = {
+      ...board,
+      cards: [...board.cards.map(card => card.id), cardId],
+    }
+    updateBoard(board.id, newBoard as unknown as Board);
+  }
 
   return (
     <Box>
@@ -191,7 +221,7 @@ const BoardPage = () => {
         <Typography className='!m-10 uppercase !text-xl'>{board.title}</Typography>
         <Box className="flex justify-evenly items-stretch">
           <DndContext
-            collisionDetection={closestCenter}
+            collisionDetection={closestCorners}
             sensors={sensors}
             onDragEnd={handleDragEnd}
             onDragStart={handleDragStart}
@@ -200,7 +230,7 @@ const BoardPage = () => {
           >
             {Object.keys(items).map((key) => (
               //@ts-ignore
-              <KanbanSection key={key} cards={items[key]} status={key} />
+              <KanbanSection key={key} cards={items[key]} status={key} saveCard={saveCard} />
             ))}
             <DragOverlay>
               {!!activeId ? (

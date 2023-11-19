@@ -16,7 +16,8 @@ import { logOut } from 'services/authService'
 import { getAvatarUrl, getUsername, updateAvatar } from 'services/userService'
 
 interface Props {
-  onSearch: (text: string) => void;
+  onSearch?: (text: string) => void;
+  hideSearch?: boolean;
 }
 
 const hiddenInputStyles: SxProps<Theme> = {
@@ -31,7 +32,7 @@ const hiddenInputStyles: SxProps<Theme> = {
   width: '1px',
 }
 
-const Navbar = ({ onSearch }: Props) => {
+const Navbar = ({ onSearch, hideSearch }: Props) => {
   const navigate = useNavigate();
   const [avatar, setAvatar] = useState<string>();
   const [search, setSearch] = useState<string>('');
@@ -71,38 +72,39 @@ const Navbar = ({ onSearch }: Props) => {
   }
 
   useEffect(() => {
-    onSearch(search);
+    onSearch!(search);
   }, [search])
 
   return (
     <Box className="flex justify-between items-center bg-slate-50 border-solid border-2 border-gray-800 h-16">
       <Typography className="!ml-8 !text-xl cursor-pointer" onClick={navigateHome} >KANBAN ZEN</Typography>
-      <TextField
-        variant="outlined"
-        placeholder="try search a card"
-        className="w-1/3"
-        size="small"
-        onChange={handleOnSearch}
-        value={search}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <img
-                src={searchIcon}
-                alt="search icon"
-                style={{ width: '1.3rem', height: '1.3rem' }}
-              />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            !!search ? (<InputAdornment position="end">
-              <IconButton aria-label="toggle password visibility" onClick={() => setSearch('')} edge="end">
-                <Close sx={{ fill: 'black' }} />
-              </IconButton>
-            </InputAdornment>) : (<></>)
-          ),
-        }}
-      />
+      {!hideSearch &&
+        <TextField
+          variant="outlined"
+          placeholder="try search a card"
+          className="w-1/3"
+          size="small"
+          onChange={handleOnSearch}
+          value={search}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <img
+                  src={searchIcon}
+                  alt="search icon"
+                  style={{ width: '1.3rem', height: '1.3rem' }}
+                />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              !!search ? (<InputAdornment position="end">
+                <IconButton aria-label="toggle password visibility" onClick={() => setSearch('')} edge="end">
+                  <Close sx={{ fill: 'black' }} />
+                </IconButton>
+              </InputAdornment>) : (<></>)
+            ),
+          }}
+        />}
       <Dropdown>
         <MenuButton className="flex justify between items-center !mr-8 !border-none">
           <Box className="flex justify between items-center">

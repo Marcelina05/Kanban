@@ -19,8 +19,8 @@ export const createCard = async (title: string, description: string, categories:
   return service.create(record);
 }
 
-export const updateCard = async (id: string, card: Card) => {
-  return service.update(id, card);
+export const updateCard = (card: Card) => {
+  return service.update(card.id, card);
 }
 
 export const deleteCard = async (id: string): Promise<boolean> => {

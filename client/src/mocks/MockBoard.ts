@@ -1,13 +1,12 @@
-import Board from "models/Board"
-import MockEntity from "./MockEntity"
-import MockUser from "./MockUser"
-import MockCard from "./MockCard"
+import Board from "models/Board";
+import MockEntity from "./MockEntity";
+import MockUser from "./MockUser";
 
 const MockBoard: Board = {
   ...MockEntity,
-  cards: [MockCard, MockCard, MockCard],
+  cards: [],
   owner: MockUser,
-  title: 'Mock board title',
+  title: '',
 };
 
 export default MockBoard;
