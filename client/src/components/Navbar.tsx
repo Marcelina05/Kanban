@@ -72,7 +72,9 @@ const Navbar = ({ onSearch, hideSearch }: Props) => {
   }
 
   useEffect(() => {
-    onSearch!(search);
+    if (onSearch) {
+      onSearch(search);
+    }
   }, [search])
 
   return (

@@ -6,14 +6,12 @@ import PasswordOnIcon from 'assets/password_on.png'
 import UserIcon from 'assets/usuario.png'
 import { useFormik } from 'formik'
 import { useState } from 'react'
-import { toast } from 'react-toastify'
+import NotificationService from 'services/NotificationService'
 import { signUp } from 'services/authService'
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showPasswordConfirm, setShowPasswordConfirm] = useState<boolean>(false)
-
-
 
   const handleSignup = (values: any) => {
     signUp(
@@ -23,11 +21,8 @@ const RegisterForm = () => {
       values.passwordConfirmation
     )
       .then((_) => window.location.reload())
-      .catch((error) => {
-        console.log('error: ', error)
-        toast.error('Invalid inputs', {
-          position: toast.POSITION.TOP_RIGHT
-        })
+      .catch((_) => {
+        NotificationService.error('Invalid inputs')
       })
   }
 

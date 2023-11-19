@@ -16,9 +16,10 @@ interface Props {
   status: CardStatus
   cards: Card[]
   saveCard: (cardId: string) => void;
+  onDeleteCard: (card: Card) => void;
 }
 
-const KanbanSection = ({ status, cards, saveCard }: Props) => {
+const KanbanSection = ({ status, cards, saveCard, onDeleteCard}: Props) => {
   const [openDialogForm, setOpenDialogForm] = useState<boolean>(false);
   const title = useMemo(() => getTitleByStatus(status), [status])
   const id = `${status}`;
@@ -44,7 +45,7 @@ const KanbanSection = ({ status, cards, saveCard }: Props) => {
         items={cards}
         strategy={verticalListSortingStrategy}
       >
-        <Box ref={setNodeRef} className="rounded-xl border border-solid !min-h-[80vh] h-5/6 w-2/12 bg-[#F2F6FA]">
+        <Box ref={setNodeRef} className="rounded-xl border border-solid !min-h-[75vh] w-2/12 bg-[#F2F6FA]">
           <Box className='flex justify-between items-center w-5/6 m-auto'>
             <Typography className='!font-bold !my-6  uppercase !text-2xl' variant="h2">{title}</Typography>
             <Button onClick={openForm} className='!bg-[#d2defb] !w-10 !h-10 !min-w-0 !mb-2 !rounded-full'>
@@ -53,7 +54,7 @@ const KanbanSection = ({ status, cards, saveCard }: Props) => {
           </Box>
           <Box className='w-5/6 m-auto'>
             {cards.map((card) => (
-              <KanbanCard key={card.id} card={card} />
+              <KanbanCard key={card.id} card={card} onDeleteCard={onDeleteCard}/>
             ))}
           </Box>
         </Box>

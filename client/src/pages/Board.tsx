@@ -14,6 +14,7 @@ import {
 } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { Box, Typography } from '@mui/material'
+import ConfirmationDialog from 'components/ConfirmationDialog'
 import KanbanCard from 'components/KanbanCard'
 import KanbanSection from 'components/KanbanSection'
 import Navbar from 'components/Navbar'
@@ -24,7 +25,7 @@ import Board from 'models/Board'
 import Card from 'models/Card'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { updateCard } from 'services/CardService'
+import { deleteCard, updateCard } from 'services/CardService'
 import NotificationService from 'services/NotificationService'
 import { getBoard, updateBoard } from 'services/boardService'
 import { getUserId } from 'services/userService'
@@ -33,10 +34,17 @@ const BoardPage = () => {
   const [board, setBoard] = useState<Board>(MockBoard)
   const [cards, setCards] = useState<Card[]>([])
   const [activeId, setActiveId] = useState<string>('')
+  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [updateOn, setUpdateOn] = useState<Date>(new Date());
   const wasLoaded = useRef<boolean>(false);
   const params = useParams();
   const navigate = useNavigate();
+
+  const closeDialog = () => {
+    setSelectedCard(null);
+    setOpenDialog(false);
+  }
 
   const getCards = (status: CardStatus): Card[] => {
     return cards
@@ -155,15 +163,8 @@ const BoardPage = () => {
         return card
       })
 
-      console.table(newCards.map(card => {
-        return { order: card.order, id: card.id, title: card.title }
-      }))
       return newCards
     })
-  }
-
-  const handleSearch = (text: string) => {
-
   }
 
   const fetchBoard = async () => {
@@ -206,43 +207,62 @@ const BoardPage = () => {
     saveBoard();
   }
 
-  const saveCard = (cardId: string) => {
+  const saveCard = async (cardId: string) => {
     const newBoard = {
       ...board,
       cards: [...board.cards.map(card => card.id), cardId],
     }
-    updateBoard(board.id, newBoard as unknown as Board);
+    await updateBoard(board.id, newBoard as unknown as Board);
+    setUpdateOn(new Date());
+  }
+
+  const handleDeleteCard = (card: Card) => {
+    setSelectedCard(card);
+    setOpenDialog(true);
+  }
+
+  const deleteSelectedCard = async () => {
+    try {
+      await deleteCard(selectedCard?.id ?? '')
+      setUpdateOn(new Date());
+    } catch {
+      NotificationService.error('Error deleting card!')
+    }
   }
 
   return (
-    <Box>
-      <Navbar onSearch={handleSearch} />
-      <Box className='flex flex-col'>
-        <Typography className='!m-10 uppercase !text-xl'>{board.title}</Typography>
-        <Box className="flex justify-evenly items-stretch">
-          <DndContext
-            collisionDetection={closestCorners}
-            sensors={sensors}
-            onDragEnd={handleDragEnd}
-            onDragStart={handleDragStart}
-            onDragOver={handleDragOver}
-            onDragCancel={handleDragCancel}
-          >
-            {Object.keys(items).map((key) => (
-              //@ts-ignore
-              <KanbanSection key={key} cards={items[key]} status={key} saveCard={saveCard} />
-            ))}
-            <DragOverlay>
-              {!!activeId ? (
-                <KanbanCard
-                  card={cards.find((card) => card.id === activeId) as Card}
-                />
-              ) : null}
-            </DragOverlay>
-          </DndContext>
+    <>
+      <Box>
+        <Navbar hideSearch />
+        <Box className='flex flex-col'>
+          <Typography className='!m-10 uppercase !text-xl'>{board.title}</Typography>
+          <Box className="flex justify-evenly items-stretch mb-8">
+            <DndContext
+              collisionDetection={closestCorners}
+              sensors={sensors}
+              onDragEnd={handleDragEnd}
+              onDragStart={handleDragStart}
+              onDragOver={handleDragOver}
+              onDragCancel={handleDragCancel}
+            >
+              {Object.keys(items).map((key) => (
+                //@ts-ignore
+                <KanbanSection key={key} cards={items[key]} status={key} saveCard={saveCard} onDeleteCard={handleDeleteCard} />
+              ))}
+              <DragOverlay>
+                {!!activeId ? (
+                  <KanbanCard
+                    card={cards.find((card) => card.id === activeId) as Card}
+                    onDeleteCard={handleDeleteCard}
+                  />
+                ) : null}
+              </DragOverlay>
+            </DndContext>
+          </Box>
         </Box>
       </Box>
-    </Box>
+      <ConfirmationDialog open={openDialog} onClose={closeDialog} onSuccess={deleteSelectedCard} />
+    </>
   )
 }
 
