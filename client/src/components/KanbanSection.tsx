@@ -17,7 +17,7 @@ interface Props {
 const KanbanSection = ({ status, cards }: Props) => {
   const title = useMemo(() => getTitleByStatus(status), [status])
   const id = `${status}`;
-  const {setNodeRef} = useDroppable({id});
+  const { setNodeRef } = useDroppable({ id });
 
   return (
     <SortableContext
@@ -25,16 +25,18 @@ const KanbanSection = ({ status, cards }: Props) => {
       items={cards}
       strategy={verticalListSortingStrategy}
     >
-      <Box ref={setNodeRef} className="rounded-xl border border-solid !min-h-[80vh] h-5/6 w-2/12">
-        <Box className='flex justify-evenly'>
-          <Typography className='!font-bold !my-6 !ml-6 uppercase !text-3xl'  variant="h2">{title}</Typography>
-          <Button>
-            <AddIcon/>
+      <Box ref={setNodeRef} className="rounded-xl border border-solid !min-h-[80vh] h-5/6 w-2/12 bg-[#F2F6FA]">
+        <Box className='flex justify-between items-center w-5/6 m-auto'>
+          <Typography className='!font-bold !my-6  uppercase !text-2xl' variant="h2">{title}</Typography>
+          <Button className='!bg-[#d2defb] !w-10 !h-10 !min-w-0 !mb-2 !rounded-full'>
+            <AddIcon />
           </Button>
         </Box>
-        {cards.map((card) => (
-          <KanbanCard key={card.id} card={card} />
-        ))}
+        <Box className='w-5/6 m-auto'>
+          {cards.map((card) => (
+            <KanbanCard key={card.id} card={card} />
+          ))}
+        </Box>
       </Box>
     </SortableContext>
   )

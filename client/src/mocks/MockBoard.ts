@@ -7,7 +7,7 @@ const MockBoard: Board = {
   ...MockEntity,
   cards: [MockCard, MockCard, MockCard],
   owner: MockUser,
-  title: '',
+  title: 'Mock board title',
 };
 
 export default MockBoard;

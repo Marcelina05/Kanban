@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import MockBoard from 'mocks/MockBoard'
 import Board from 'models/Board'
 import Card from 'models/Card'
@@ -13,7 +13,8 @@ import {
   DragEndEvent,
   DragStartEvent,
   DragOverEvent,
-  DragCancelEvent
+  DragCancelEvent,
+  closestCenter
 } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import CardStatus from 'enums/CardStatus'
@@ -27,6 +28,7 @@ const BoardPage = () => {
   const [board, setBoard] = useState<Board>(MockBoard)
   const [cards, setCards] = useState<Card[]>([])
   const [activeId, setActiveId] = useState<string>('')
+  const [updateOn, setUpdateOn] = useState<Date>(new Date());
 
   const getCards = (status: CardStatus): Card[] => {
     return cards
@@ -174,30 +176,41 @@ const BoardPage = () => {
 
   }
 
+  const fetchBoard = () => {
+
+  }
+
+  useEffect(() => {
+    fetchBoard();
+  }, [updateOn])
+
   return (
     <Box>
       <Navbar onSearch={handleSearch} />
-      <Box className="flex mt-16 justify-evenly">
-        <DndContext
-          collisionDetection={closestCorners}
-          sensors={sensors}
-          onDragEnd={handleDragEnd}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragCancel={handleDragCancel}
-        >
-          {Object.keys(items).map((key) => (
-            //@ts-ignore
-            <KanbanSection key={key} cards={items[key]} status={key} />
-          ))}
-          <DragOverlay>
-            {!!activeId ? (
-              <KanbanCard
-                card={cards.find((card) => card.id === activeId) as Card}
-              />
-            ) : null}
-          </DragOverlay>
-        </DndContext>
+      <Box className='flex flex-col'>
+        <Typography className='!m-10 uppercase !text-xl'>{board.title}</Typography>
+        <Box className="flex justify-evenly items-stretch">
+          <DndContext
+            collisionDetection={closestCenter}
+            sensors={sensors}
+            onDragEnd={handleDragEnd}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDragCancel={handleDragCancel}
+          >
+            {Object.keys(items).map((key) => (
+              //@ts-ignore
+              <KanbanSection key={key} cards={items[key]} status={key} />
+            ))}
+            <DragOverlay>
+              {!!activeId ? (
+                <KanbanCard
+                  card={cards.find((card) => card.id === activeId) as Card}
+                />
+              ) : null}
+            </DragOverlay>
+          </DndContext>
+        </Box>
       </Box>
     </Box>
   )
