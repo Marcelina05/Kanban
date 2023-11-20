@@ -84,7 +84,7 @@ const Navbar = ({ onSearch, hideSearch }: Props) => {
         <TextField
           variant="outlined"
           placeholder="try search a kanban board"
-          className="w-1/3"
+          className="m-auto !my-3 w-1/3 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg"
           size="small"
           onChange={handleOnSearch}
           value={search}

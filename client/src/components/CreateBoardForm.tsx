@@ -48,7 +48,7 @@ const CreateBoardForm = ({ onSubmit, board }: Props) => {
         }}
         size="medium"
       >
-        Create board
+        {!!board ? 'Update board' : 'Create board' }
       </Button>
     </form>
   )

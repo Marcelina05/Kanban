@@ -27,7 +27,10 @@ const KanbanSection = ({ status, cards, saveCard, onDeleteCard, onUpdateCard }: 
   const id = `${status}`;
   const { setNodeRef } = useDroppable({ id });
 
-  const closeForm = () => setOpenDialogForm(false);
+  const closeForm = () => {
+    setOpenDialogForm(false);
+    setSelectedCard(null);
+  };
   const openForm = () => setOpenDialogForm(true);
 
   const handleSaveCard = async (title: string, description: string, categories: Category[], cardId = '') => {

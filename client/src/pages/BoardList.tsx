@@ -76,6 +76,10 @@ const BoardList = () => {
   }
 
   const handleBoardCreate = async (values: any) => {
+    if (!values.title) {
+      NotificationService.error('Title could not be empty')
+      return;
+    }
     !!selectedBoard ? handleUpdate(values) : handleCreate(values);
   }
 

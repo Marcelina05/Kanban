@@ -21,7 +21,13 @@ const CreateCategory = ({ onSave, onClose }: Props) => {
   const handleCreate = () => {
     try {
       if (!color) {
-        throw new Error('You should choose a color before creating category')
+        NotificationService.error('You should choose a color before creating category');
+        return;
+      }
+
+      if (!name) {
+        NotificationService.error('Category name could not be empty!');
+        return;
       }
 
       onSave(name, color);
@@ -43,7 +49,7 @@ const CreateCategory = ({ onSave, onClose }: Props) => {
         value={name}
         onChange={handleNameChange}
         placeholder="Insert the name for category"
-        className="w-2/3 !mb-2 bg-neutral-100 rounded-lg"
+        className='m-auto !my-3 w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
         size="small"
       />
       <Typography className='!text-2xl !my-4'>Color</Typography>

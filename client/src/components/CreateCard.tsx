@@ -49,8 +49,17 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
     setDescription(value);
   }
 
+  const hasValidValues = (): boolean => {
+    return !!title && !!description
+  }
+
   const handleCreate = () => {
     try {
+      if(!hasValidValues()) {
+        NotificationService.error("Title and description could not be empty!");
+        return;
+      }
+
       if (!!card?.id) {
         onSave(title, description, categories, card.id);
       } else {
@@ -84,7 +93,7 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
               value={title}
               onChange={handleTitleChange}
               placeholder="Insert the title"
-              className="w-2/3 !mb-2 bg-neutral-100 rounded-lg"
+              className='m-auto !my-3 w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
               size="small"
             />
           </Box>
@@ -94,7 +103,7 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
               value={description}
               onChange={handleDescriptionChange}
               placeholder="Insert a description"
-              className="w-2/3 !mb-2 bg-neutral-100 rounded-lg"
+              className='m-auto !my-3 w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
               multiline
               size='small'
               rows={4}
@@ -112,7 +121,7 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
               <Select
                 size='small'
                 multiple
-                className='w-2/3 !my-8 bg-neutral-100 rounded-lg'
+                className='m-auto !my-3 w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
                 value={categories}
                 onChange={(event: SelectChangeEvent<Category[]>) => {
                   setCategories(event.target.value as Category[]);
