@@ -4,9 +4,9 @@ class ColorUtils {
   public static getColorTitle(color: Colors): string {
     const colorMap = {
       [Colors.GREEN]: "#11E4AF",
-      [Colors.PINK]: "black",
+      [Colors.PINK]: "#EC70FF",
       [Colors.PURPLE]: "#7C64F7",
-      [Colors.YELLOW]: "black",
+      [Colors.YELLOW]: "#FFAD0A",
     }
 
     return colorMap[color as keyof typeof colorMap];

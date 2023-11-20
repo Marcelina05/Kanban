@@ -7,6 +7,7 @@ import ColorUtils from 'utils/ColorUtils'
 import DateUtils from 'utils/DateUtils'
 import deleteIcon from 'assets/borrar.png'
 import editIcon from 'assets/editar.png'
+import CategoryChip from './CategoryChip'
 
 interface Props {
   card: Card
@@ -42,25 +43,14 @@ const KanbanCard = ({ card, onDeleteCard }: Props) => {
 
     >
       <Box className='!mx-2 items-baseline relative'>
-        {card.categories.map(category => (
-          <Chip
-            key={category.id}
-            label={category.name}
-            onClick={() => console.log("")}
-            sx={{
-              backgroundColor: ColorUtils.getColorBackground(category.color),
-              color: ColorUtils.getColorTitle(category.color),
-            }}
-          />))}
+        {card.categories.map(category => <CategoryChip key={`${card.id}-${category.id}`} category={category} />)}
         <AddIcon className='!bg-[#d2defb] !mx-2 !w-4 !h-4 !min-w-0 !rounded-full !opacity-0' sx={{ width: '1rem' }} />
         <IconButton className='!absolute opacity-0 !right-8 !top-0'>
           <Icon sx={{ width: '1rem', height: 'auto' }}>
             <img src={editIcon} />
           </Icon>
         </IconButton>
-        <IconButton className='!absolute opacity-0 !right-0 !top-0' onClick={() => {
-          onDeleteCard(card);
-        }}>
+        <IconButton className='!absolute opacity-0 !right-0 !top-0' onClick={() => onDeleteCard(card)}>
           <Icon sx={{ width: '1rem', height: 'auto' }}>
             <img src={deleteIcon} />
           </Icon>

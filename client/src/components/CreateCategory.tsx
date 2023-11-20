@@ -1,0 +1,85 @@
+import { Box, Button, TextField, Typography } from "@mui/material";
+import Colors from "enums/Colors";
+import { useState } from "react";
+import NotificationService from "services/NotificationService";
+import ColorUtils from "utils/ColorUtils";
+
+interface Props {
+  onSave: (name: string, color: Colors) => void;
+  onClose: () => void;
+}
+
+const CreateCategory = ({ onSave, onClose }: Props) => {
+  const [name, setName] = useState<string>('');
+  const [color, setColor] = useState<Colors | null>(null);
+
+  const handleNameChange: React.ChangeEventHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setName(value);
+  }
+
+  const handleCreate = () => {
+    try {
+      if (!color) {
+        throw new Error('You should choose a color before creating category')
+      }
+
+      onSave(name, color);
+      onClose();
+      NotificationService.success('Category created successfully!')
+    } catch {
+      NotificationService.error('Error creating Category. Please give us a name and select a color!');
+    }
+  }
+
+  const handleColorSelection = (color: Colors) => {
+    setColor(color)
+  }
+
+  return (
+    <Box className='flex flex-col items-center bg-[#E2EAF4]'>
+      <Typography className='!text-2xl !my-4'>Category</Typography>
+      <TextField
+        value={name}
+        onChange={handleNameChange}
+        placeholder="Insert the name for category"
+        className="w-2/3 !mb-2 bg-neutral-100 rounded-lg"
+        size="small"
+      />
+      <Typography className='!text-2xl !my-4'>Color</Typography>
+      <Box className='flex mb-6'>
+        {Object.keys(Colors).map((key) =>
+          <Box
+            key={key}
+            onClick={() => handleColorSelection(key as Colors)}
+            sx={{
+              border: color === key ? '0.25rem solid #3B429F' : 'none',
+              backgroundColor: color === key ? ColorUtils.getColorTitle(key as Colors) : ColorUtils.getColorBackground(key as Colors),
+              width: '3.5rem',
+              height: '3.5rem',
+              borderRadius: '100%',
+              marginInline: '0.75rem',
+              cursor: 'pointer',
+              "&:hover": {
+                backgroundColor: ColorUtils.getColorTitle(key as Colors),
+              }
+            }}
+          />)}
+      </Box>
+      <Button
+        onClick={handleCreate}
+        variant="contained"
+        className="!m-auto !my-8 w-1/3"
+        sx={{
+          backgroundColor: '#9F8BF9',
+          '&:hover': { backgroundColor: '#BEB1FB' }
+        }}
+        size="medium"
+      >
+        Create category
+      </Button>
+    </Box>
+  )
+}
+
+export default CreateCategory;

@@ -202,7 +202,14 @@ const BoardPage = () => {
   }
 
   const handleChangeCardPosition = async () => {
-    await Promise.all(cards.map(updateCard))
+    await Promise.all(cards.map((card) => {
+      const newCard = {
+        ...card,
+        categories: card.categories.map(cat => cat.id)
+      } as unknown as Card;
+
+      updateCard(newCard);
+    }))
     setActiveId('');
     saveBoard();
   }

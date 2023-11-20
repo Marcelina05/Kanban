@@ -7,7 +7,7 @@ import { RecordService } from "pocketbase";
 
 const service: RecordService = pb.collection(Collections.CARD);
 
-export const createCard = async (title: string, description: string, categories: Category[], status: CardStatus, order: number) => {
+export const createCard = async (title: string, description: string, categories: string[], status: CardStatus, order: number) => {
   const record = {
     title,
     description,

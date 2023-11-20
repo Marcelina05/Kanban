@@ -8,7 +8,7 @@ import { useMemo, useState } from 'react'
 import { useDroppable } from '@dnd-kit/core'
 import Button from '@mui/material/Button'
 import AddIcon from '@mui/icons-material/Add'
-import CreateCard from 'pages/CreateCard'
+import CreateCard from 'components/CreateCard'
 import Category from 'models/Category'
 import { createCard } from 'services/CardService'
 
@@ -19,7 +19,7 @@ interface Props {
   onDeleteCard: (card: Card) => void;
 }
 
-const KanbanSection = ({ status, cards, saveCard, onDeleteCard}: Props) => {
+const KanbanSection = ({ status, cards, saveCard, onDeleteCard }: Props) => {
   const [openDialogForm, setOpenDialogForm] = useState<boolean>(false);
   const title = useMemo(() => getTitleByStatus(status), [status])
   const id = `${status}`;
@@ -29,13 +29,13 @@ const KanbanSection = ({ status, cards, saveCard, onDeleteCard}: Props) => {
   const openForm = () => setOpenDialogForm(true);
 
   const handleSaveCard = async (title: string, description: string, categories: Category[]) => {
-    const newCard = await createCard(title, description, categories, status, cards.length);
+    const newCard = await createCard(title, description, categories.map(cat => cat.id), status, cards.length);
     saveCard(newCard.id);
   }
 
   return (
     <>
-      <Dialog open={openDialogForm} onClose={closeForm} fullWidth maxWidth='md'>
+      <Dialog open={openDialogForm} onClose={closeForm} fullWidth maxWidth='lg'>
         <DialogContent className='bg-[#F2F6FA]'>
           <CreateCard onSave={handleSaveCard} onClose={closeForm} />
         </DialogContent>
@@ -54,7 +54,7 @@ const KanbanSection = ({ status, cards, saveCard, onDeleteCard}: Props) => {
           </Box>
           <Box className='w-5/6 m-auto'>
             {cards.map((card) => (
-              <KanbanCard key={card.id} card={card} onDeleteCard={onDeleteCard}/>
+              <KanbanCard key={card.id} card={card} onDeleteCard={onDeleteCard} />
             ))}
           </Box>
         </Box>
