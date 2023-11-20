@@ -1,20 +1,19 @@
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
-import Navbar from 'components/Navbar'
-import { Chip, Dialog, DialogContent, MenuItem, Select, SelectChangeEvent } from '@mui/material'
-import { useEffect, useState } from 'react'
-import Category from 'models/Category'
-import NotificationService from 'services/NotificationService'
-import CreateCategory from './CreateCategory'
-import Colors from 'enums/Colors'
 import AddIcon from '@mui/icons-material/Add'
+import { Dialog, DialogContent, IconButton, MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import Colors from 'enums/Colors'
+import Card from 'models/Card'
+import Category from 'models/Category'
+import { useEffect, useState } from 'react'
+import NotificationService from 'services/NotificationService'
 import { createCategory, getAllCategories } from 'services/categoryService'
 import { getUserId } from 'services/userService'
 import CategoryChip from './CategoryChip'
-import Card from 'models/Card'
-
+import CreateCategory from './CreateCategory'
+import ClearIcon from '@mui/icons-material/Clear';
 
 interface Props {
   onSave: (title: string, description: string, categories: Category[], cardId?: string) => void;
@@ -55,7 +54,7 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
 
   const handleCreate = () => {
     try {
-      if(!hasValidValues()) {
+      if (!hasValidValues()) {
         NotificationService.error("Title and description could not be empty!");
         return;
       }
@@ -82,6 +81,11 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
     <>
       <Dialog open={openDialog} onClose={closeForm} fullWidth maxWidth='md'>
         <DialogContent className='bg-[#F2F6FA]'>
+          <Box className='flex justify-end'>
+            <IconButton onClick={closeForm}>
+              <ClearIcon sx={{ fill: '#648dfe' }} />
+            </IconButton>
+          </Box>
           <CreateCategory onClose={closeForm} onSave={handleCategoryCreation} />
         </DialogContent>
       </Dialog>

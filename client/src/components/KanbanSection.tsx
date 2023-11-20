@@ -1,16 +1,17 @@
+import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import AddIcon from '@mui/icons-material/Add'
+import ClearIcon from '@mui/icons-material/Clear'
+import { Box, Dialog, DialogContent, IconButton, Typography } from '@mui/material'
+import Button from '@mui/material/Button'
+import CreateCard from 'components/CreateCard'
 import CardStatus from 'enums/CardStatus'
 import Card from 'models/Card'
-import KanbanCard from './KanbanCard'
-import { Box, Dialog, DialogContent, Typography } from '@mui/material'
-import { getTitleByStatus } from 'utils/StringUtils'
-import { useEffect, useMemo, useState } from 'react'
-import { useDroppable } from '@dnd-kit/core'
-import Button from '@mui/material/Button'
-import AddIcon from '@mui/icons-material/Add'
-import CreateCard from 'components/CreateCard'
 import Category from 'models/Category'
+import { useEffect, useMemo, useState } from 'react'
 import { createCard, updateCard } from 'services/CardService'
+import { getTitleByStatus } from 'utils/StringUtils'
+import KanbanCard from './KanbanCard'
 
 interface Props {
   status: CardStatus
@@ -67,6 +68,11 @@ const KanbanSection = ({ status, cards, saveCard, onDeleteCard, onUpdateCard }: 
     <>
       <Dialog open={openDialogForm} onClose={closeForm} fullWidth maxWidth='lg'>
         <DialogContent className='bg-[#F2F6FA]'>
+          <Box className='flex justify-end'>
+            <IconButton onClick={closeForm}>
+              <ClearIcon sx={{ fill: '#648dfe' }} />
+            </IconButton>
+          </Box>
           <CreateCard onSave={handleSaveCard} onClose={closeForm} card={selectedCard} />
         </DialogContent>
       </Dialog>

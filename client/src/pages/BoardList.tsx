@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from '@mui/material'
+import { Dialog, DialogContent, IconButton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Icon from '@mui/material/Icon'
@@ -8,10 +8,10 @@ import CreateBoardForm from 'components/CreateBoardForm'
 import Navbar from 'components/Navbar'
 import Board from 'models/Board'
 import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
 import NotificationService from 'services/NotificationService'
 import { createBoard, getAllBoards, updateBoard } from 'services/boardService'
 import { getUserId } from 'services/userService'
+import ClearIcon from '@mui/icons-material/Clear';
 
 const BoardList = () => {
   const [openBoardForm, setOpenBoardForm] = useState<boolean>(false);
@@ -104,6 +104,11 @@ const BoardList = () => {
           </Button>
           <Dialog open={openBoardForm} onClose={closeForm} fullWidth maxWidth='md'>
             <DialogContent className='bg-[#F2F6FA]'>
+              <Box className='flex justify-end'>
+                <IconButton onClick={closeForm}>
+                  <ClearIcon sx={{fill: '#648dfe'}} />
+                </IconButton>
+              </Box>
               <CreateBoardForm onSubmit={handleBoardCreate} board={selectedBoard} />
             </DialogContent>
           </Dialog>
