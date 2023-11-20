@@ -12,9 +12,10 @@ import CategoryChip from './CategoryChip'
 interface Props {
   card: Card
   onDeleteCard: (card: Card) => void;
+  onUpdateCard: (card: Card) => void;
 }
 
-const KanbanCard = ({ card, onDeleteCard }: Props) => {
+const KanbanCard = ({ card, onDeleteCard, onUpdateCard }: Props) => {
   const {
     attributes,
     listeners,
@@ -45,7 +46,7 @@ const KanbanCard = ({ card, onDeleteCard }: Props) => {
       <Box className='!mx-2 items-baseline relative'>
         {card.categories.map(category => <CategoryChip key={`${card.id}-${category.id}`} category={category} />)}
         <AddIcon className='!bg-[#d2defb] !mx-2 !w-4 !h-4 !min-w-0 !rounded-full !opacity-0' sx={{ width: '1rem' }} />
-        <IconButton className='!absolute opacity-0 !right-8 !top-0'>
+        <IconButton className='!absolute opacity-0 !right-8 !top-0' onClick={() => onUpdateCard(card)}>
           <Icon sx={{ width: '1rem', height: 'auto' }}>
             <img src={editIcon} />
           </Icon>

@@ -13,19 +13,21 @@ import AddIcon from '@mui/icons-material/Add'
 import { createCategory, getAllCategories } from 'services/categoryService'
 import { getUserId } from 'services/userService'
 import CategoryChip from './CategoryChip'
+import Card from 'models/Card'
 
 
 interface Props {
-  onSave: (title: string, description: string, categories: Category[]) => void;
+  onSave: (title: string, description: string, categories: Category[], cardId?: string) => void;
   onClose: () => void;
+  card: Card | null;
 }
 
-const CreateCard = ({ onSave, onClose }: Props) => {
-  const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+const CreateCard = ({ onSave, onClose, card }: Props) => {
+  const [title, setTitle] = useState<string>(card?.title ?? '');
+  const [description, setDescription] = useState<string>(card?.description ?? '');
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [updateOn, setUpdateOn] = useState<Date>(new Date());
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>(card?.categories ?? []);
   const [availableCategories, setAvailableCategories] = useState<Category[]>([]);
 
   const fetchCategories = async () => {
@@ -49,7 +51,11 @@ const CreateCard = ({ onSave, onClose }: Props) => {
 
   const handleCreate = () => {
     try {
-      onSave(title, description, categories);
+      if (!!card?.id) {
+        onSave(title, description, categories, card.id);
+      } else {
+        onSave(title, description, categories);
+      }
       onClose();
     } catch {
       NotificationService.error('Error creating card. Check the info!');

@@ -223,6 +223,16 @@ const BoardPage = () => {
     setUpdateOn(new Date());
   }
 
+  const handleUpdateCard = async () => {
+    const newBoard = {
+      ...board,
+      cards: board.cards.map(card => card.id),
+    }
+
+    await updateBoard(board.id, newBoard as unknown as Board);
+    setUpdateOn(new Date());
+  }
+
   const handleDeleteCard = (card: Card) => {
     setSelectedCard(card);
     setOpenDialog(true);
@@ -254,13 +264,14 @@ const BoardPage = () => {
             >
               {Object.keys(items).map((key) => (
                 //@ts-ignore
-                <KanbanSection key={key} cards={items[key]} status={key} saveCard={saveCard} onDeleteCard={handleDeleteCard} />
+                <KanbanSection key={key} cards={items[key]} status={key} saveCard={saveCard} onDeleteCard={handleDeleteCard} onUpdateCard={handleUpdateCard} />
               ))}
               <DragOverlay>
                 {!!activeId ? (
                   <KanbanCard
                     card={cards.find((card) => card.id === activeId) as Card}
                     onDeleteCard={handleDeleteCard}
+                    onUpdateCard={() => {}}
                   />
                 ) : null}
               </DragOverlay>
