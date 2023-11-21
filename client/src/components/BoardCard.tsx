@@ -44,20 +44,20 @@ const BoardCard = ({ board, notify, onUpdate }: Props) => {
 
   return (
     <>
-      <Box className="items-center flex justify-between bg-slate-50 w-5/6 h-15 rounded-lg my-2">
-        <Box className="ml-4 w-[100%] cursor-pointer capitalize" onClick={handleNavigation}>
-          <Typography className="!ml-4 !mt-2">{board.title}</Typography>
-          <Typography className="!ml-4 !mt-1 text-[#495057] opacity-75">
+      <Box className="flex-col sm:flex-row items-center flex justify-between bg-slate-50 w-5/6 h-15 rounded-lg my-2">
+        <Box className="m-4 w-[100%] cursor-pointer capitalize" onClick={handleNavigation}>
+          <Typography className="!mx-4 !mt-2">{board.title}</Typography>
+          <Typography className="!mx-4 !mt-1 text-[#495057] opacity-75">
             {`${DateUtils.formatDate(board.created)}`}
           </Typography>
         </Box>
-        <Box className="mr-8 flex justify-between">
-          <Button className="!m-1 grid justify-items-end" onClick={() => onUpdate(board)}>
+        <Box className="sm:mr-8 flex w-[100%] sm:w-[unset] justify-between">
+          <Button className=" !m-1 w-[50%] mx-auto grid justify-items-end" onClick={() => onUpdate(board)}>
             <Icon>
               <img src={editIcon} />
             </Icon>
           </Button>
-          <Button onClick={toggleDialog}>
+          <Button className='mx-auto w-[50%]' onClick={toggleDialog}>
             <Icon>
               <img src={deleteIcon} />
             </Icon>

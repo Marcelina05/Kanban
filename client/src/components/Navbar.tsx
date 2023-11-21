@@ -78,13 +78,13 @@ const Navbar = ({ onSearch, hideSearch }: Props) => {
   }, [search])
 
   return (
-    <Box className="flex justify-between items-center bg-slate-50 border-solid border-2 border-gray-800 h-16">
-      <Typography className="!ml-8 !text-xl cursor-pointer" onClick={navigateHome} >KANBAN ZEN</Typography>
+    <Box className="flex flex-wrap justify-between items-center bg-slate-50 border-solid border-b-2 border-gray-800 ">
+      <Typography className="order-1 !ml-8 !text-xl cursor-pointer" onClick={navigateHome} >KANBAN ZEN</Typography>
       {!hideSearch &&
         <TextField
           variant="outlined"
           placeholder="try search a kanban board"
-          className="m-auto !my-3 w-1/3 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg"
+          className=" w-[100%] !mx-[6%] sm:mx-auto order-3 sm:order-2 m-auto !my-2 sm:!my-3 sm:w-1/3 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg"
           size="small"
           onChange={handleOnSearch}
           value={search}
@@ -108,13 +108,14 @@ const Navbar = ({ onSearch, hideSearch }: Props) => {
           }}
         />}
       <Dropdown>
-        <MenuButton className="flex justify between items-center !mr-8 !border-none">
+        <MenuButton className="order-2 sm:order-3 flex justify between items-center md:!mr-8 !border-none">
           <Box className="flex justify between items-center">
-            <Typography className="!mr-4">{getUsername()}</Typography>
+            <Typography className="hidden sm:inline-block !mr-4">{getUsername()}</Typography>
             <Avatar className=" !ml-2" alt="user avatar" src={avatar} />
           </Box>
         </MenuButton>
         <Menu keepMounted>
+          <MenuItem className='block sm:!hidden' disabled>{getUsername()}</MenuItem>
           <MenuItem component={'label'}>
             Change Avatar
             <Input type='file' inputProps={{ accept: 'image/*' }} sx={hiddenInputStyles} onChange={handleAvatarUpload} />

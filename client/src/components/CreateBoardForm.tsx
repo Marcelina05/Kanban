@@ -34,13 +34,13 @@ const CreateBoardForm = ({ onSubmit, board }: Props) => {
         name="title"
         onChange={formik.handleChange}
         value={formik.values.title}
-        className="!m-auto !my-3 w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg"
+        className="!m-auto !my-3 w-[96%] sm:w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg"
         size="small"
       />
       <Button
         type="submit"
         variant="contained"
-        className="!m-auto !mt-10 w-2/6 !py-3 !rounded-lg"
+        className="!m-auto !mt-10 w-[96%] sm:w-2/6 !py-3 !rounded-lg"
         sx={{
           backgroundColor: '#9F8BF9',
           color: '#343A40',
