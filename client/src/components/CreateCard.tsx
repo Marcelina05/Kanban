@@ -79,8 +79,8 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
 
   return (
     <>
-      <Dialog open={openDialog} onClose={closeForm} fullWidth maxWidth='md'>
-        <DialogContent className='bg-[#F2F6FA]'>
+      <Dialog open={openDialog} onClose={closeForm} fullWidth maxWidth='md' className='[&>div>*]:!m-0 [&>div>*]:!w-[94%]'>
+        <DialogContent className='!p-2 sm:!p-5 bg-[#F2F6FA]'>
           <Box className='flex justify-end'>
             <IconButton onClick={closeForm}>
               <ClearIcon sx={{ fill: '#648dfe' }} />
@@ -90,14 +90,14 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
         </DialogContent>
       </Dialog>
       <Box>
-        <Box className="flex flex-col items-center justify-center w-[90%] h-[90%]  my-8 mx-16 bg-[#E2EAF4] rounded-xl">
+        <Box className="flex flex-col items-center justify-center !w-[100%] sm:w-[90%] h-[90%]  my-8 mx-auto bg-[#E2EAF4] rounded-xl">
           <Box className="bg-[#E2EAF4] flex flex-col items-center w-[100%] my-2">
             <Typography className="!mt-2 !text-lg">Title</Typography>
             <TextField
               value={title}
               onChange={handleTitleChange}
               placeholder="Insert the title"
-              className='m-auto !my-3 w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
+              className='m-auto !my-3 w-[94%] sm:w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
               size="small"
             />
           </Box>
@@ -107,7 +107,7 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
               value={description}
               onChange={handleDescriptionChange}
               placeholder="Insert a description"
-              className='m-auto !my-3 w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
+              className='m-auto !my-3 w-[94%] sm:w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
               multiline
               size='small'
               rows={4}
@@ -117,7 +117,7 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
           <Box className="bg-[#E2EAF4] flex flex-col items-center w-[100%] my-2">
             <Box className='flex relative w-[80%] items-baseline'>
               <Typography className="!mt-2 !text-lg w-[100%] text-center">Categories</Typography>
-              <Button onClick={() => setOpenDialog(true)} className='!bg-[#d2defb] !w-10 !h-10 !min-w-0 !mb-2 !rounded-full !absolute !right-12'>
+              <Button onClick={() => setOpenDialog(true)} className='!bg-[#d2defb] !w-10 !h-10 !min-w-0 !mb-2 !rounded-full !absolute !right-0  sm:!right-12'>
                 <AddIcon />
               </Button>
             </Box>
@@ -125,7 +125,7 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
               <Select
                 size='small'
                 multiple
-                className='m-auto !my-3 w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
+                className='m-auto !my-3 w-[94%] sm:w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
                 value={categories}
                 onChange={(event: SelectChangeEvent<Category[]>) => {
                   setCategories(event.target.value as Category[]);

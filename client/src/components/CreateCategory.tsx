@@ -49,11 +49,11 @@ const CreateCategory = ({ onSave, onClose }: Props) => {
         value={name}
         onChange={handleNameChange}
         placeholder="Insert the name for category"
-        className='m-auto !my-3 w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
+        className='m-auto !my-3 w-[94%] sm:w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
         size="small"
       />
       <Typography className='!text-2xl !my-4'>Color</Typography>
-      <Box className='flex mb-6'>
+      <Box className='flex flex-wrap justify-center  mb-6 mx-0 sm:mx-0'>
         {Object.keys(Colors).map((key) =>
           <Box
             key={key}
@@ -64,8 +64,14 @@ const CreateCategory = ({ onSave, onClose }: Props) => {
               width: '3.5rem',
               height: '3.5rem',
               borderRadius: '100%',
-              marginInline: '0.75rem',
               cursor: 'pointer',
+              marginBlock: {
+                xs: '0.75rem'
+              },
+              marginInline: {
+                xs: '2rem',
+                sm: '0.75rem',
+              },
               "&:hover": {
                 backgroundColor: ColorUtils.getColorTitle(key as Colors),
               }
@@ -75,7 +81,7 @@ const CreateCategory = ({ onSave, onClose }: Props) => {
       <Button
         onClick={handleCreate}
         variant="contained"
-        className="!m-auto !my-8 w-1/3"
+        className="!m-auto !my-8 w-[80%] sm:w-1/3"
         sx={{
           backgroundColor: '#9F8BF9',
           '&:hover': { backgroundColor: '#BEB1FB' }

@@ -253,7 +253,7 @@ const BoardPage = () => {
         <Navbar hideSearch />
         <Box className='flex flex-col'>
           <Typography className='!m-10 uppercase !text-xl'>{board.title}</Typography>
-          <Box className="flex justify-evenly items-stretch mb-8">
+          <Box className="flex xl:justify-evenly items-stretch mb-8 overflow-y-auto !max-w[95vw] ">
             <DndContext
               collisionDetection={closestCorners}
               sensors={sensors}
