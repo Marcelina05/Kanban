@@ -1,17 +1,17 @@
-import Board from 'models/Board'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Icon from '@mui/material/Icon'
 import Typography from '@mui/material/Typography'
 import deleteIcon from 'assets/borrar.png'
 import editIcon from 'assets/editar.png'
-import Icon from '@mui/material/Icon'
-import Button from '@mui/material/Button'
-import { deleteBoard } from 'services/boardService'
-import NotificationService from 'services/NotificationService'
-import { useState } from 'react'
-import ConfirmationDialog from './ConfirmationDialog'
-import { useNavigate } from 'react-router-dom'
 import Routes from 'enums/Routes'
+import Board from 'models/Board'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import NotificationService from 'services/NotificationService'
+import { deleteBoard } from 'services/boardService'
 import DateUtils from 'utils/DateUtils'
+import ConfirmationDialog from './ConfirmationDialog'
 
 interface Props {
   board: Board;
@@ -27,6 +27,7 @@ const BoardCard = ({ board, notify, onUpdate }: Props) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   const toggleDialog = () => setOpenDialog(value => !value);
+  const handleNavigation = () => navigate(Routes.BOARD.replace(':id', board.id))
 
   const handleDelete = async () => {
     try {
@@ -38,10 +39,6 @@ const BoardCard = ({ board, notify, onUpdate }: Props) => {
     }
   }
 
-  const handleNavigation = () => {
-    navigate(Routes.BOARD.replace(':id', board.id))
-  }
-
   return (
     <>
       <Box className="flex-col sm:flex-row items-center flex justify-between bg-slate-50 w-5/6 h-15 rounded-lg my-2">
@@ -51,6 +48,7 @@ const BoardCard = ({ board, notify, onUpdate }: Props) => {
             {`${DateUtils.formatDate(board.created)}`}
           </Typography>
         </Box>
+        {/* Buttons */}
         <Box className="sm:mr-8 flex w-[100%] sm:w-[unset] justify-between">
           <Button className=" !m-1 w-[50%] mx-auto grid justify-items-end" onClick={() => onUpdate(board)}>
             <Icon>

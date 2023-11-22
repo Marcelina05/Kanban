@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add'
+import ClearIcon from '@mui/icons-material/Clear'
 import { Dialog, DialogContent, IconButton, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -13,7 +14,6 @@ import { createCategory, getAllCategories } from 'services/categoryService'
 import { getUserId } from 'services/userService'
 import CategoryChip from './CategoryChip'
 import CreateCategory from './CreateCategory'
-import ClearIcon from '@mui/icons-material/Clear';
 
 interface Props {
   onSave: (title: string, description: string, categories: Category[], cardId?: string) => void;

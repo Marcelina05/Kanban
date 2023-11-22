@@ -1,9 +1,6 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import Board from "models/Board";
-import { toast } from "react-toastify";
-import { createBoard } from "services/boardService";
-import { getUserId } from "services/userService";
 
 interface FormFields {
   title: string;
@@ -25,10 +22,7 @@ const CreateBoardForm = ({ onSubmit, board }: Props) => {
   })
 
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      className="flex flex-col py-8"
-    >
+    <form onSubmit={formik.handleSubmit} className="flex flex-col py-8">
       <Typography className='w-[100%] text-center !font-bold !text-3xl'>Board title</Typography>
       <TextField
         name="title"
@@ -48,7 +42,7 @@ const CreateBoardForm = ({ onSubmit, board }: Props) => {
         }}
         size="medium"
       >
-        {!!board ? 'Update board' : 'Create board' }
+        {!!board ? 'Update board' : 'Create board'}
       </Button>
     </form>
   )

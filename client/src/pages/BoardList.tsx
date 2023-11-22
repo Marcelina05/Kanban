@@ -1,3 +1,4 @@
+import ClearIcon from '@mui/icons-material/Clear'
 import { Dialog, DialogContent, IconButton } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -11,7 +12,6 @@ import { useEffect, useState } from 'react'
 import NotificationService from 'services/NotificationService'
 import { createBoard, getAllBoards, updateBoard } from 'services/boardService'
 import { getUserId } from 'services/userService'
-import ClearIcon from '@mui/icons-material/Clear';
 
 const BoardList = () => {
   const [openBoardForm, setOpenBoardForm] = useState<boolean>(false);

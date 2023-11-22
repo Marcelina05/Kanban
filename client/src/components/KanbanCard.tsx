@@ -1,12 +1,11 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import AddIcon from '@mui/icons-material/Add'
-import { Box, Button, Chip, Icon, IconButton, Paper, Typography } from '@mui/material'
-import Card from 'models/Card'
-import ColorUtils from 'utils/ColorUtils'
-import DateUtils from 'utils/DateUtils'
+import { Box, Icon, IconButton, Paper, Typography } from '@mui/material'
 import deleteIcon from 'assets/borrar.png'
 import editIcon from 'assets/editar.png'
+import Card from 'models/Card'
+import DateUtils from 'utils/DateUtils'
 import CategoryChip from './CategoryChip'
 
 interface Props {
