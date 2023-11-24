@@ -128,6 +128,7 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
                 className='m-auto !my-3 w-[94%] sm:w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
                 value={categories}
                 onChange={(event: SelectChangeEvent<Category[]>) => {
+                  console.log(event.target.value);
                   setCategories(event.target.value as Category[]);
                 }}
                 renderValue={(selected) => (

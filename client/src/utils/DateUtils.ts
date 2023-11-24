@@ -9,7 +9,7 @@ class DateUtils {
     const dt = DateTime.fromJSDate(sanitized)
     dt.setZone('America/El_Salvador')
 
-    return dt.setLocale('es').toFormat(format ?? defaultFormat);
+    return dt.toFormat(format ?? defaultFormat);
   }
 }
 

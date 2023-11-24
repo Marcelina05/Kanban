@@ -81,7 +81,7 @@ const KanbanSection = ({ status, cards, saveCard, onDeleteCard, onUpdateCard }: 
         items={cards}
         strategy={verticalListSortingStrategy}
       >
-        <Box ref={setNodeRef} className="rounded-xl mx-3 border border-solid !min-h-[75vh] min-w-[320px] w-2/12 bg-[#F2F6FA]">
+        <Box ref={setNodeRef} className="rounded-xl mx-3 border border-solid !min-h-[70vh] min-w-[320px] w-2/12 bg-[#F2F6FA]">
           <Box className='flex justify-between items-center w-5/6 m-auto'>
             <Typography className='!font-bold !my-6  uppercase !text-2xl' variant="h2">{title}</Typography>
             <Button onClick={openForm} className='!bg-[#d2defb] !w-10 !h-10 !min-w-0 !mb-2 !rounded-full'>

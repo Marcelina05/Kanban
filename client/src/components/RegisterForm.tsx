@@ -120,6 +120,7 @@ const RegisterForm = () => {
       />
       <TextField
         name="passwordConfirmation"
+        type={showPasswordConfirm ? 'text' : 'password'}
         onChange={signupForm.handleChange}
         value={signupForm.values.passwordConfirmation}
         label="Confirm Password"

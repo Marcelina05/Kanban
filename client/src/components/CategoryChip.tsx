@@ -13,6 +13,7 @@ const CategoryChip = ({ category }: Props) => {
       sx={{
         backgroundColor: ColorUtils.getColorBackground(category.color),
         color: ColorUtils.getColorTitle(category.color),
+        margin: "0.25rem",
       }}
     />
   )
