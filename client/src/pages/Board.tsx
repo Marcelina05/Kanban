@@ -112,7 +112,7 @@ const BoardPage = () => {
     const isBelowOverItem =
       over &&
       active.rect.current.translated &&
-      active.rect.current.translated.top > over.rect.top + over.rect.height
+      active.rect.current.translated.top > over.rect.top + (over.rect.height / 2)
 
     const indexModifier = isBelowOverItem ? 1 : 0
 
@@ -138,14 +138,19 @@ const BoardPage = () => {
       ? order + indexModifier - 2
       : order + indexModifier - 1
 
-    if (activeCard.status === overCard.status) {
+    const hasTheSameType = activeCard.status === overCard.status;
+
+    if (hasTheSameType) {
       // If the status is the same we should delete the element that is in the array before of movement
       typecards.splice(activeCard.order - 1, 1)
     }
 
+    const position = newIndex + (!hasTheSameType && order > newIndex ? (isBelowOverItem ? 1 : -1) : 0);
+    const positionInType = typecards.indexOf(overCard);
+    const shouldBeBefore = position <= positionInType || (newIndex < positionInType && !hasTheSameType)
+    
     // Add in new index the element to Add
-    typecards.splice(newIndex, 0, toAdd)
-
+    typecards.splice(shouldBeBefore ? positionInType : positionInType + 1, 0, toAdd)
     const ordered = typecards.map((card, index) => {
       return {
         ...card,
@@ -270,7 +275,7 @@ const BoardPage = () => {
                   <KanbanCard
                     card={cards.find((card) => card.id === activeId) as Card}
                     onDeleteCard={handleDeleteCard}
-                    onUpdateCard={() => {}}
+                    onUpdateCard={() => { }}
                   />
                 ) : null}
               </DragOverlay>

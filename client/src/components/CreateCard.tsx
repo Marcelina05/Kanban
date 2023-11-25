@@ -14,6 +14,7 @@ import { createCategory, getAllCategories } from 'services/categoryService'
 import { getUserId } from 'services/userService'
 import CategoryChip from './CategoryChip'
 import CreateCategory from './CreateCategory'
+import { cyan } from '@mui/material/colors'
 
 interface Props {
   onSave: (title: string, description: string, categories: Category[], cardId?: string) => void;
@@ -26,11 +27,14 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
   const [description, setDescription] = useState<string>(card?.description ?? '');
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [updateOn, setUpdateOn] = useState<Date>(new Date());
-  const [categories, setCategories] = useState<Category[]>(card?.categories ?? []);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [availableCategories, setAvailableCategories] = useState<Category[]>([]);
 
   const fetchCategories = async () => {
     const response = await getAllCategories(getUserId());
+    const categoriesIds = card?.categories.map(cat => cat.id) ?? [];
+    const includedCategories = response.filter(cat => categoriesIds.includes(cat.id));
+    setCategories(includedCategories);
     setAvailableCategories(response);
   }
 
@@ -111,7 +115,6 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
               multiline
               size='small'
               rows={4}
-              maxRows={4}
             />
           </Box>
           <Box className="bg-[#E2EAF4] flex flex-col items-center w-[100%] my-2">
@@ -128,7 +131,6 @@ const CreateCard = ({ onSave, onClose, card }: Props) => {
                 className='m-auto !my-3 w-[94%] sm:w-4/5 bg-[#FFFFFF] [&>*]:!border-none  [&>*]:!rounded-lg'
                 value={categories}
                 onChange={(event: SelectChangeEvent<Category[]>) => {
-                  console.log(event.target.value);
                   setCategories(event.target.value as Category[]);
                 }}
                 renderValue={(selected) => (
